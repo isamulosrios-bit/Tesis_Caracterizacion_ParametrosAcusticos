@@ -49,29 +49,29 @@ def resolver_sistema_completo(): # Se define una función donde todos los parám
         # Esto es la primera fila de la matriz M y el primer elemento del vector b_vec.
         
         # Continuidad de la presión en la interfaz x = 0.5 (p1=p2)
-        M[1, 0] = np.exp(1j * k1 * x_interface)
-        M[1, 1] = np.exp(-1j * k1 * x_interface)
-        M[1, 2] = -np.exp(1j * k2 * x_interface)
-        M[1, 3] = -np.exp(-1j * k2 * x_interface)
+        M[1, 0] = np.exp(-1j * k1 * x_interface)
+        M[1, 1] = np.exp(1j * k1 * x_interface)
+        M[1, 2] = -np.exp(-1j * k2 * x_interface)
+        M[1, 3] = -np.exp(1j * k2 * x_interface)
         # Esto forma parte de la segunda fila de la matriz M.
 
         # Continuidad del flujo (1/rho * dp/dx) en la interfaz x = 0.5
-        M[2, 0] = (1j * k1 / rho1) * np.exp(1j * k1 * x_interface)
-        M[2, 1] = (-1j * k1 / rho1) * np.exp(-1j * k1 * x_interface)
-        M[2, 2] = (-1j * k2 / rho2) * np.exp(1j * k2 * x_interface)
-        M[2, 3] = (1j * k2 / rho2) * np.exp(-1j * k2 * x_interface)
+        M[2, 0] = (-1j * k1 / rho1) * np.exp(-1j * k1 * x_interface)
+        M[2, 1] = (1j * k1 / rho1) * np.exp(1j * k1 * x_interface)
+        M[2, 2] = (1j * k2 / rho2) * np.exp(-1j * k2 * x_interface)
+        M[2, 3] = (-1j * k2 / rho2) * np.exp(1j * k2 * x_interface)
         # Esto forma parte de la tercera fila de la matriz M.
 
         # Frontera derecha x = L (Condiciones Homogéneas estándar)
         if not usar_sommerfeld:
             # Pared rígida (dp/dx = 0)
-            M[3, 2] = 1j * k2 * np.exp(1j * k2 * L_val)
-            M[3, 3] = -1j * k2 * np.exp(-1j * k2 * L_val)
+            M[3, 2] = -1j * k2 * np.exp(-1j * k2 * L_val)
+            M[3, 3] = 1j * k2 * np.exp(1j * k2 * L_val)
             nombre_caso = "Pared Rígida"
         else:
-            # Sommerfeld: dp/dx - 1j*k2*p = 0
+            # Sommerfeld: dp/dx + 1j*k2*p = 0
             M[3, 2] = 0.0
-            M[3, 3] = -2j * k2 * np.exp(-1j * k2 * L_val)
+            M[3, 3] = 1.0 #(-2j * k2 * np.exp(-1j * k2 * L_val)
             nombre_caso = "Sommerfeld"
             
         # Con condición o sin condición sommerfeld, se completa la cuarta fila de la matriz M y se define el nombre del caso para su posterior uso en el diccionario de resultados.
@@ -87,9 +87,9 @@ def resolver_sistema_completo(): # Se define una función donde todos los parám
         
         for i, x in enumerate(x_coords_malla):
             if x <= x_interface:
-                p_analitica[i] = A1 * np.exp(1j * k1 * x) + B1 * np.exp(-1j * k1 * x)
+                p_analitica[i] = A1 * np.exp(-1j * k1 * x) + B1 * np.exp(1j * k1 * x)
             else:
-                p_analitica[i] = A2 * np.exp(1j * k2 * x) + B2 * np.exp(-1j * k2 * x)
+                p_analitica[i] = A2 * np.exp(-1j * k2 * x) + B2 * np.exp(1j * k2 * x)
         # Bucle que recorre cada punto de la malla y calcula la presión analítica según la región (aire o agua) usando las amplitudes de onda resueltas previamente.
 
         resultados_analiticos[nombre_caso] = p_analitica
@@ -154,7 +154,7 @@ def resolver_sistema_completo(): # Se define una función donde todos los parám
     zero_val = fem.Constant(domain, PETSc.ScalarType(0.0)) # Se define una constante cero para el lado derecho de la ecuación débil, representando la ausencia de fuentes externas en el dominio (disfraza el vacío).
     L_form = ufl.inner(zero_val, q) * dx # integral del lado derecho de la ecuación débil, que es cero en todo el dominio, lo que significa que no hay contribuciones externas a la presión.
 
-    coef_sommerfeld = fem.Constant(domain, PETSc.ScalarType(-1j * k2 / rho2)) # Se define la constante compleja para la condición de Sommerfeld en el borde derecho, que se usará en la formulación débil para imponer la condición de radiación.
+    coef_sommerfeld = fem.Constant(domain, PETSc.ScalarType(1j * k2 / rho2)) # Se define la constante compleja para la condición de Sommerfeld en el borde derecho, que se usará en la formulación débil para imponer la condición de radiación.
     
     formas = {
         "Pared Rígida": a_base,

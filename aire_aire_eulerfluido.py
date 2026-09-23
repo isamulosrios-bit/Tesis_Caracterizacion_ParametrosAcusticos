@@ -78,7 +78,7 @@ jk_const_aux = fem.Constant(domain, np.complex128(1j * k)) # Se crea la constant
 # Definimos las dos variantes físicas del lado izquierdo (la ecuación débil).
 formas = {
     "Pared Rígida": (ufl.inner(ufl.grad(p), ufl.grad(q)) - k_cuadrado * ufl.inner(p, q)) * dx,
-    "Sommerfeld": (ufl.inner(ufl.grad(p), ufl.grad(q)) - k_cuadrado * ufl.inner(p, q)) * dx - jk_const_aux * ufl.inner(p, q) * ds(2)
+    "Sommerfeld": (ufl.inner(ufl.grad(p), ufl.grad(q)) - k_cuadrado * ufl.inner(p, q)) * dx + jk_const_aux * ufl.inner(p, q) * ds(2)
 }
 
 resultados_numericos = {}
@@ -111,7 +111,7 @@ for nombre_caso, a_form in formas.items():
 # 9. SOLUCION ANALITICA DE REFERENCIA CORRESPONDIENTE
     if nombre_caso == "Sommerfeld":
         # P(x) = Po * e^(j*k*x)
-        p_an = pin * np.exp(1j * k * x_coords_ordenadas)
+        p_an = pin * np.exp(-1j * k * x_coords_ordenadas)
     else:
         # P(x) = Po*e^(-jkx) + [Po*e^(-jkL) / (e^(jkL) + e^(-jkL))] * (e^(jkx) - e^(-jkx))
         #termino_1 = pin * np.exp(-1j * k * x_coords)

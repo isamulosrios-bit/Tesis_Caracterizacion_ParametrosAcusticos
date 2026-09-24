@@ -8,13 +8,14 @@ import numpy as np # Librería fundamental para computación científica en Pyth
 import matplotlib.pyplot as plt # Librería para crear gráficos y visualizaciones en Python, especialmente útil para generar gráficos 2D y 3D de datos numéricos. Gráficos rápidos y de alta calidad.
 
 # 1. PARAMETROS FISICOS.
-f = 500.0 # Frecuencia de la onda acústica [Hz].                    
+f = 500 # Frecuencia de la onda acústica [Hz].                    
 omega = 2.0 * np.pi * f # Frecuancia angular de la onda acústica [rad/s].
 c0 = 343.0 # Velocidad del sonido en el aire [m/s].
 rho0 = 1.225 # Densidad del aire [kg/m^3].
 k = omega / c0 # Número de onda. Cuánto más grande es k, más rápido varía la onda en el espacio.
 pin = 1.0 + 0.0j # Presión incidente compleja. Es un número complejo, donde el número condensa tanto la amplitud como la fase de la onda mediante la notación de fasores (un formato que simplifica las ecuaciones de onda temporales a espaciales).
 L_val = 1.0 # Longitud del dominio [m].
+Zs = 150.0 + 50.0j # Impedancia superficial de prueba [Pa s / m] (ejemplo complejo)
 
 # 2. MALLA 1D.
 domain = mesh.create_interval(
@@ -69,17 +70,19 @@ k_cuadrado = fem.Constant(domain, np.complex128(k**2))
 cero_complejo = fem.Constant(domain, np.complex128(0.0 + 0.0j))
 # Con fem.constant se disfraza el número complejo como una constante que puede ser utilizada en el dominio de la simulación (fácil de leer por dolfinx).
 L_rhs = ufl.inner(cero_complejo, q) * dx # El lado derecho de la ecuación débil es cero, ya que no hay fuentes internas en el dominio. La integral de prueba q se multiplica por cero, lo que significa que no hay contribución de fuentes externas a la presión acústica en el dominio.
+robin_coef = 1j * (omega * rho0 / Zs)
 
 from dolfinx.fem.petsc import LinearProblem
 
 # 8. SE CREA EL CONTENEDOR DE LA SOLUCION FINAL Y DICCIONARIOS
 jk_const_aux = fem.Constant(domain, np.complex128(1j * k)) # Se crea la constante compleja j*k para la condición de Sommerfeld.
-
+robin_const_aux = fem.Constant(domain, np.complex128(robin_coef))
 # Definimos las dos variantes físicas del lado derecho de la ecuación débil según la condición de frontera elegida.
 formas = {
     "Dirichlet - Neumann (pared rígida)": (ufl.inner(ufl.grad(p), ufl.grad(q)) - k_cuadrado * ufl.inner(p, q)) * dx,
-    "Dirichlet - Sommerfeld": (ufl.inner(ufl.grad(p), ufl.grad(q)) - k_cuadrado * ufl.inner(p, q)) * dx + jk_const_aux * ufl.inner(p, q) * ds(2)
-}
+    "Dirichlet - Sommerfeld": (ufl.inner(ufl.grad(p), ufl.grad(q)) - k_cuadrado * ufl.inner(p, q)) * dx + jk_const_aux * ufl.inner(p, q) * ds(2),
+    "Dirichlet - Robin": (ufl.inner(ufl.grad(p), ufl.grad(q)) - k_cuadrado * ufl.inner(p, q)) * dx + robin_const_aux * ufl.inner(p, q) * ds(2)
+    }
 
 resultados_numericos = {}
 resultados_analiticos = {}
@@ -112,14 +115,30 @@ for nombre_caso, a_form in formas.items():
     if nombre_caso == "Dirichlet - Sommerfeld":
         # P(x) = Pin * e^(-j*k*x)
         p_an = pin * np.exp(-1j * k * x_coords_ordenadas)
-    else:
+    
+    elif nombre_caso == "Dirichlet - Neumann (pared rígida)":
+        p_an = pin * (np.cos(k * (L_val - x_coords_ordenadas)) / np.cos(k * L_val))
+        
         # P(x) = Pin*e^(-jkx) + [Pin*e^(-jkL) / (e^(jkL) + e^(-jkL))] * (e^(jkx) - e^(-jkx))
         # termino_1 = pin * np.exp(-1j * k * x_coords)
         # numerador = pin * np.exp(-1j * k * L_val)
         # denominador = np.exp(1j * k * L_val) + np.exp(-1j * k * L_val)
         # corchete = np.exp(1j * k * x_coords) - np.exp(-1j * k * x_coords)
         # p_analitica = termino_1 + (numerador / denominador) * corchete
-        p_an = pin * (np.cos(k * (L_val - x_coords_ordenadas)) / np.cos(k * L_val))
+        
+    elif nombre_caso == "Dirichlet - Robin":
+        # Fórmula analítica general para la condición de Robin:
+        # P(x) = pin * e^(-jkx) + [ (pin * e^(-jkL) * (k - w*rho0/Zs)) / (k*(e^(jkL) + e^(-jkL)) + (w*rho0/Zs)*(e^(jkL) - e^(-jkL))) ] * (e^(jkx) - e^(-jkx))
+        termino_incidente = pin * np.exp(-1j * k * x_coords_ordenadas)
+        # Numerador del coeficiente B
+        num_B = pin * np.exp(-1j * k * L_val) * (k - (omega * rho0 / Zs))
+        # Denominador del coeficiente B
+        den_B = k * (np.exp(1j * k * L_val) + np.exp(-1j * k * L_val)) + (omega * rho0 / Zs) * (np.exp(1j * k * L_val) - np.exp(-1j * k * L_val))
+        B_coef = num_B / den_B
+        # Parte espacial de la onda reflejada / estacionaria extra
+        parte_reflejada = np.exp(1j * k * x_coords_ordenadas) - np.exp(-1j * k * x_coords_ordenadas)
+        p_an = termino_incidente + B_coef * parte_reflejada
+        
     resultados_analiticos[nombre_caso] = p_an
 
     # Cálculo del error cuantitativo L2
@@ -133,8 +152,8 @@ for nombre_caso, a_form in formas.items():
 
 print("¡Simulación 1D resuelta con éxito en DOLFINx (modo complejo y limpio)! ")
 
-# 11. GRAFICA COMPARATIVA DOBLE SIMULTANEA.
-fig, axs = plt.subplots(2, 1, figsize=(9, 5)) # Crea el lienzo o ventana donde se dibujará la gráfica. El tamaño de la ventana es de 9 pulgadas de ancho y 5 pulgadas de alto.
+# 11. GRAFICA COMPARATIVA TRIPLE SIMULTANEA.
+fig, axs = plt.subplots(3, 1, figsize=(9, 8)) # Crea el lienzo o ventana donde se dibujará la gráfica. El tamaño de la ventana es de 9 pulgadas de ancho y 8 pulgadas de alto.
 
 for idx, nombre_caso in enumerate(formas.keys()):
     ax = axs[idx]
@@ -145,17 +164,14 @@ for idx, nombre_caso in enumerate(formas.keys()):
     # Dibuja la curva analítica (roja segmentada) encima
     ax.plot(x_coords_ordenadas, resultados_analiticos[nombre_caso].real, 'r--', label="Analítico Exacto", linewidth=2)
     
-    # Decoraciones rápidas para entender el gráfico
+    # Decoraciones rápidas
     ax.set_ylabel("Presión Real [Pa]")
-    
-    # TÍTULO MODIFICADO CON PORCENTAJE Y PASCALES ABSOLUTOS:
-    ax.set_title(f"Caso Aire-Aire: {nombre_caso} (Err Rel: {errores_l2[nombre_caso]['rel_pct']:.4f}% | Err Máx Abs: {errores_l2[nombre_caso]['max_abs']:.3e} Pa)", fontsize=10)
-    
-    ax.legend()
+    ax.set_title(f"Caso: {nombre_caso} (Err Rel: {errores_l2[nombre_caso]['rel_pct']:.4f}% | Err Máx Abs: {errores_l2[nombre_caso]['max_abs']:.3e} Pa)", fontsize=9)
+    ax.legend(loc="upper right")
     ax.grid(True)
 
 # Decoraciones rápidas para entender el gráfico
-axs[1].set_xlabel("Posición en el tubo x [m]")
+axs[2].set_xlabel("Posición en el tubo x [m]")
 plt.tight_layout()
 
 # ¡Muestra la ventana interactiva en la pantalla!

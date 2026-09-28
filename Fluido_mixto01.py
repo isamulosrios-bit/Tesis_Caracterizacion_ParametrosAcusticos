@@ -67,12 +67,12 @@ def resolver_sistema_completo(): # Se define una función donde todos los parám
             # Neumann (dp/dx = 0)
             M[3, 2] = -1j * k2 * np.exp(-1j * k2 * L_val)
             M[3, 3] = 1j * k2 * np.exp(1j * k2 * L_val)
-            nombre_caso = "Neumann (pared rígida)"
+            nombre_caso = "Dirichlet - Neumann (pared rígida)"
         else:
             # Sommerfeld: dp/dx + 1j*k2*p = 0
             M[3, 2] = 0.0
             M[3, 3] = 1.0 #(¿-2j * k2 * np.exp(-1j * k2 * L_val?)
-            nombre_caso = "Sommerfeld"
+            nombre_caso = "Dirichlet - Sommerfeld"
             
         # Con condición o sin condición sommerfeld, se completa la cuarta fila de la matriz M y se define el nombre del caso para su posterior uso en el diccionario de resultados.
 
@@ -157,8 +157,8 @@ def resolver_sistema_completo(): # Se define una función donde todos los parám
     coef_sommerfeld = fem.Constant(domain, PETSc.ScalarType(1j * k2 / rho2)) # Se define la constante compleja para la condición de Sommerfeld en el borde derecho, que se usará en la formulación débil para imponer la condición de radiación.
     
     formas = {
-        "Neumann (pared rígida)": a_base,
-        "Sommerfeld": a_base + coef_sommerfeld * ufl.inner(p, q) * ds(2)
+        "Dirichlet - Neumann (pared rígida)": a_base,
+        "Dirichlet - Sommerfeld": a_base + coef_sommerfeld * ufl.inner(p, q) * ds(2)
     }
 
     resultados_numericos = {}

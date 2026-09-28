@@ -26,5 +26,7 @@
   "window.autoDetectColorScheme": true,
   "workbench.preferredLightColorTheme": "Dark Theme",
   "git.enableSmartCommit": true,
-  "python.defaultInterpreterPath": "/home/isamu/miniforge3/envs/fenics-complex/bin/python"
+  "python.defaultInterpreterPath": "/home/isamu/miniforge3/envs/fenics-complex/bin/python",
+  "python-envs.defaultEnvManager": "ms-python.python:conda",
+  "python-envs.defaultPackageManager": "ms-python.python:conda"
 }

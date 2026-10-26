@@ -22,9 +22,9 @@ El flujo de trabajo integra:
 
 El problema acústico acoplado (tubo vacío + muestra porosa JCA + cavidad trasera de aire con pared rígida) se resuelve mediante la siguiente forma débil variacional derivada analíticamente:
 
-\[\int_{\Omega} \frac{1}{\rho_{eq}} \nabla p \cdot \nabla q \, d\Omega - \int_{\Omega} \frac{\omega^2}{K_{eq}} p \cdot q \, d\Omega + \int_{\partial \Omega_{\text{izq}}} \frac{j k_0}{\rho_0} p \cdot q \, ds - \int_{\partial \Omega_{\text{der}}} \frac{\omega \tan(k_0 L)}{\rho_0 c_0} p \cdot q \, ds = \int_{\partial \Omega_{\text{izq}}} \frac{2 k_0 P_{in}}{\rho_0} q \, ds\]
+$$\int_{\Omega} \frac{1}{\rho_{eq}} \nabla p \cdot \nabla q \, d\Omega - \int_{\Omega} \frac{\omega^2}{K_{eq}} p \cdot q \, d\Omega + \int_{\partial \Omega_{\text{izq}}} \frac{j k_0}{\rho_0} p \cdot q \, ds - \int_{\partial \Omega_{\text{der}}} \frac{\omega \tan(k_0 L)}{\rho_0 c_0} p \cdot q \, ds = \int_{\partial \Omega_{\text{izq}}} \frac{2 k_0 P_{in}}{\rho_0} q \, ds$$
 
-Donde \(\rho_{eq}\) y \(K_{eq}\) varían espacialmente celda por celda mediante una máscara booleana (`np.where`), asignando las propiedades efectivas del modelo JCA en la zona porosa y las del aire puro en el resto del dominio.
+Donde $\rho_{eq}$ y $K_{eq}$ varían espacialmente celda por celda mediante una máscara booleana (`np.where`), asignando las propiedades efectivas del modelo JCA en la zona porosa y las del aire puro en el resto del dominio.
 
 ---
 

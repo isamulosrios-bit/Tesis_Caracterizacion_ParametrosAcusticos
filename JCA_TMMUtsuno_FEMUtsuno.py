@@ -117,27 +117,27 @@ class TuboFEM:
 
     def __init__(self, params, d, L, x1, x2, L_tubo=0.12, h=2.5e-4, Zb=np.inf, Pin=1.0):
         self.params, self.d, self.L = params, d, L
-        self.x1, self.x2, self.Pin, self.Zb = x1, x2, Pin, Zb  # Función de inicio
+        self.x1, self.x2, self.Pin, self.Zb = x1, x2, Pin, Zb  # Función de inicio.
 
         x_min, x_max = -L_tubo, d + L
-        N = int(round((x_max - x_min) / h))  # número de elementos (celdas) en la malla
+        N = int(round((x_max - x_min) / h))  # número de elementos (celdas) en la malla.
         self.msh = msh = mesh.create_interval(
             MPI.COMM_SELF, N, [x_min, x_max]
-        )  # Se crea la malla
+        )  # Se crea la malla.
 
-        # Los micrófonos y la interfaz deben caer en NODOS exactos (sin interpolar)
+        # Los micrófonos y la interfaz deben caer en NODOS exactos.
         xs = msh.geometry.x[
             :, 0
-        ]  # Extrae las coordenadas de los nodos de la malla en toda la dirección x
+        ]  # Extrae las coordenadas de los nodos de la malla en toda la dirección x.
         for xc in (-x1, -x2, 0.0, d):
             assert np.min(np.abs(xs - xc)) < 1e-9, (
                 f"x={xc} si no cae en un nodo: se ajusta h para que sea divisor de las distancias."
             )
-        # El assert evalua: ¿Hay un nodo de la malla que caiga exactamente sobre la posición del micrófono o de la interfaz?
+        # El assert evalua: ¿Hay un nodo de la malla que caiga exactamente sobre la posición del micrófono o de la interfaz?.
         # el 1e-9 dice: Si la distancia entre el nodo y el punto es menor a un nanómetro, se acépta como exacto.
         # np.min(np.abs(xs - xc)) calcula la distancia mínima entre el nodo y el punto xc. El cual es el punto que se busca para los micrófonos y la interfaz. Si no hay ningún nodo que caiga exactamente sobre el punto, se lanza un error con un mensaje indicando que se debe ajustar el tamaño del elemento h para que sea divisor de las distancias.
 
-        # Propiedades por celda (DG0): aire o poroso
+        # Propiedades por celda (DG0): aire o poroso.
         make_space = (
             getattr(fem, "functionspace", None) or fem.FunctionSpace
         )  # Asegura que el codigo funcione sin importar la version de dolfinx.
@@ -154,7 +154,7 @@ class TuboFEM:
         V = make_space(msh, ("Lagrange", 1))
         P, q = ufl.TrialFunction(V), ufl.TestFunction(V)
 
-        # Fronteras: 1 = izquierda (radiación + fuente), 2 = derecha (pared)
+        # Fronteras: 1 = izquierda (radiación + fuente), 2 = derecha (pared).
         fdim = msh.topology.dim - 1
         izq = mesh.locate_entities(msh, fdim, lambda x: np.isclose(x[0], x_min))
         der = mesh.locate_entities(msh, fdim, lambda x: np.isclose(x[0], x_max))
@@ -178,7 +178,7 @@ class TuboFEM:
         self.c_src = fem.Constant(msh, S(0))  # 2 j k0 Pin / ρ0
         self.c_Zb = fem.Constant(msh, S(0))  # jω / Zb
 
-        # Construcción modular de la forma variacional
+        # Construcción modular de la forma variacional.
         a, Lf = tubo_variational_form(
             P,
             q,
@@ -249,7 +249,7 @@ class TuboFEM:
         P1, P2 = uh.eval(self.pts, self.cells)[:, 0]
         # [:, 0] extrae la componente x de la presión evaluada en los puntos de los micrófonos. P1 corresponde al micrófono en -x1 y P2 al micrófono en -x2.
 
-        # Post-proceso ISO 10534-2 con R referido a x=0 (cara de la muestra)
+        # Post-proceso ISO 10534-2 con R referido a x=0 (cara de la muestra).
         s = self.x1 - self.x2
         H12 = P2 / P1
         R = (

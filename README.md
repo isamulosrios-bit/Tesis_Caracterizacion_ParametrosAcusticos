@@ -13,8 +13,8 @@ Este proyecto implementa un **gemelo digital computacional** para la caracteriza
 El flujo de trabajo integra:
 * **📐 Modelos analíticos directos (Ground Truth):** Formulación constitutiva JCA y propagación multicapa mediante el Método de Matrices de Transferencia (TMM).
 * **💻 Simulaciones numéricas variacionales (FEM):** Resolución de la ecuación de Helmholtz para medios disipativos complejos en FEniCSx con soporte sesquilineal en PETSc (modo complejo).
-* **🧪 Emulación virtual de tubo de impedancia (Kundt):** Medición de presiones mediante micrófonos virtuales en posiciones exactas de la malla, cálculo de la función de transferencia acústica H₁₂, transferencia de fase al plano frontal de la muestra (x = 0) e identificación de la impedancia superficial (\(Z_s\)) y el coeficiente de reflexión (R).
-* **🔄 Algoritmo inverso de caracterización (Two-Cavity Method):** Reconstrucción robusta de las propiedades intrínsecas del material (impedancia característica \(Z_c\) y número de onda complejo \(k_c\)) a partir de dos ensayos con cavidades de aire traseras (L₁ y L₂) según la formulación de Utsuno et al. (1989), incorporando desenvolvimiento de fase continuo (*unwrap*) y validación cuantitativa mediante errores relativos globales frente a TMM y JCA exacto.
+* **🧪 Emulación virtual de tubo de impedancia (Kundt):** Medición de presiones mediante micrófonos virtuales en posiciones exactas de la malla, cálculo de la función de transferencia acústica \(H_{12}\), transferencia de fase al plano frontal de la muestra (\(x = 0\)) e identificación de la impedancia superficial (\(Z_s\)) y el coeficiente de reflexión (\(R\)).
+* **🔄 Algoritmo inverso de caracterización (Two-Cavity Method):** Reconstrucción robusta de las propiedades intrínsecas del material (impedancia característica \(Z_c\) y número de onda complejo \(k_c\)) a partir de dos ensayos con cavidades de aire traseras (\(L_1\) y \(L_2\)) según la formulación de Utsuno et al. (1989), incorporando desenvolvimiento de fase continuo (*unwrap*) y validación cuantitativa mediante errores relativos globales frente a TMM y JCA exacto.
 
 ---
 

@@ -1,6 +1,6 @@
 # 🔬 Caracterización de Parámetros Acústicos de Materiales Porosos mediante Elementos Finitos (FEniCSx) y Ensayos Virtuales de Dos Cavidades (ISO 10534-2)
 
-* **👤 Autor:** Isaac Flores M.  
+* **👤 Autor:** Álvaro Flores V.  
 * **🎓 Tesis:** Pregrado en Ingeniería en Construcción / Ingeniería Civil  
 * **🏢 Institución:** Universidad Austral de Chile (UACh), Valdivia, Chile  
 

@@ -1,0 +1,66 @@
+\babel@toc {spanish}{}\relax 
+\contentsline {part}{I\hspace {1em}Marco Teórico}{4}{part.1}%
+\contentsline {section}{\numberline {1}Fundamentos Físico-Matemáticos de la Acústica}{4}{section.1}%
+\contentsline {subsection}{\numberline {1.1}Ecuación de Continuidad (Conservación de Masa)}{4}{subsection.1.1}%
+\contentsline {subsection}{\numberline {1.2}Campo de Velocidades y Balance de Flujo}{5}{subsection.1.2}%
+\contentsline {subsection}{\numberline {1.3}Generación Total y Teorema de la Divergencia de Gauss}{5}{subsection.1.3}%
+\contentsline {subsection}{\numberline {1.4}Ecuación de Conservación Diferencial y Ley de Continuidad de la Masa}{7}{subsection.1.4}%
+\contentsline {subsection}{\numberline {1.5}Ecuaciones de Navier-Stokes (Segunda Ley de Newton para Fluidos)}{8}{subsection.1.5}%
+\contentsline {subsection}{\numberline {1.6}Fuerzas Superficiales: Presión y Esfuerzos Viscosos}{9}{subsection.1.6}%
+\contentsline {subsection}{\numberline {1.7}Divergencia del Tensor de Esfuerzos Viscosos}{9}{subsection.1.7}%
+\contentsline {subsection}{\numberline {1.8}Gradiente de Velocidad y Descomposición Cinemática}{10}{subsection.1.8}%
+\contentsline {subsection}{\numberline {1.9}Ley de Viscosidad de Newton y Ecuaciones de Navier-Stokes}{11}{subsection.1.9}%
+\contentsline {subsection}{\numberline {1.10}Ecuación de Euler (Fluidos Ideales)}{11}{subsection.1.10}%
+\contentsline {subsection}{\numberline {1.11}Linealización de las Ecuaciones de Conservación (Acústica Lineal)}{11}{subsection.1.11}%
+\contentsline {subsubsection}{\numberline {1.11.1}Linealización de la Ecuación de Continuidad}{12}{subsubsection.1.11.1}%
+\contentsline {subsubsection}{\numberline {1.11.2}Linealización de la Ecuación de Euler (Cantidad de Movimiento)}{13}{subsubsection.1.11.2}%
+\contentsline {subsection}{\numberline {1.12}Termodinámica del Medio y Ley Adiabática}{13}{subsection.1.12}%
+\contentsline {subsubsection}{\numberline {1.12.1}Linealización de la Ley Adiabática}{14}{subsubsection.1.12.1}%
+\contentsline {subsection}{\numberline {1.13}Velocidad del Sonido y Ecuación de Onda Temporal}{15}{subsection.1.13}%
+\contentsline {subsubsection}{\numberline {1.13.1}Combinación de la Continuidad y Euler Linealizadas}{15}{subsubsection.1.13.1}%
+\contentsline {subsection}{\numberline {1.14}Separación de Variables y Ecuación de Helmholtz}{16}{subsection.1.14}%
+\contentsline {subsubsection}{\numberline {1.14.1}Relación con el Número de Onda y Frecuencia}{17}{subsubsection.1.14.1}%
+\contentsline {subsubsection}{\numberline {1.14.2}Reducción a una Dimensión (Tubo Acústico o Línea de Transmisión)}{17}{subsubsection.1.14.2}%
+\contentsline {subsection}{\numberline {1.15}Solución de la Ecuación de Helmholtz en 1D y Propagación de Ondas}{17}{subsection.1.15}%
+\contentsline {subsubsection}{\numberline {1.15.1}Dirección de Propagación en el Espacio-Tiempo}{18}{subsubsection.1.15.1}%
+\contentsline {subsection}{\numberline {1.16}Impedancia Acústica Característica}{18}{subsection.1.16}%
+\contentsline {subsubsection}{\numberline {1.16.1}Derivación a partir de una Onda Viajera Pura}{19}{subsubsection.1.16.1}%
+\contentsline {subsubsection}{\numberline {1.16.2}Definición General e Interpretación Física}{19}{subsubsection.1.16.2}%
+\contentsline {subsubsection}{\numberline {1.16.3}Relevancia para el Método del Fluido Equivalente}{19}{subsubsection.1.16.3}%
+\contentsline {subsection}{\numberline {1.17}Condiciones de Contorno y Condición de Radiación de Sommerfeld}{20}{subsection.1.17}%
+\contentsline {subsubsection}{\numberline {1.17.1}Condición de Dirichlet en la Entrada ($x = 0$)}{20}{subsubsection.1.17.1}%
+\contentsline {subsubsection}{\numberline {1.17.2}Superposición Completa Espacio-Temporal}{20}{subsubsection.1.17.2}%
+\contentsline {subsubsection}{\numberline {1.17.3}Factorización de D'Alembert y Condición de Sommerfeld en la Salida ($x = L$)}{21}{subsubsection.1.17.3}%
+\contentsline {subsubsection}{\numberline {1.17.4}Evaluación de los Componentes en la Condición de Sommerfeld}{21}{subsubsection.1.17.4}%
+\contentsline {part}{II\hspace {1em}Fundamentos Analíticos y Numéricos para la Validación en FEniCSx}{22}{part.2}%
+\contentsline {section}{\numberline {2}Caso 1: Tubo de Impedancia de un Solo Medio (Validación Aire-Aire)}{23}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Aplicación de la Condición de Sommerfeld en el Extremo Derecho ($x = L$)}{23}{subsection.2.1}%
+\contentsline {subsubsection}{\numberline {2.1.1}Derivación y Sustitución Detallada}{23}{subsubsection.2.1.1}%
+\contentsline {subsection}{\numberline {2.2}Condición de Pared Rígida (Extremo Cerrado en $x = L$)}{24}{subsection.2.2}%
+\contentsline {subsubsection}{\numberline {2.2.1}Cálculo de la Constante $B$ para Pared Rígida}{24}{subsubsection.2.2.1}%
+\contentsline {subsubsection}{\numberline {2.2.2}Solución Analítica con Extremo Cerrado}{24}{subsubsection.2.2.2}%
+\contentsline {section}{\numberline {3}Caso 1 --- Formulación Débil por el Método de Elementos Finitos (FEM)}{25}{section.3}%
+\contentsline {subsection}{\numberline {3.1}Integración por Partes}{25}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Imposición de la Condición de Dirichlet en $x = 0$}{26}{subsection.3.2}%
+\contentsline {section}{\numberline {4}Caso 1 --- Formulación de Contornos Naturales en el Extremo $x = L$}{26}{section.4}%
+\contentsline {subsection}{\numberline {4.1}1. Caso sin Condición de Sommerfeld (Pared Rígida / Extremo Cerrado)}{26}{subsection.4.1}%
+\contentsline {subsection}{\numberline {4.2}2. Caso con Condición de Sommerfeld (Pared Absorbente / Radiación)}{26}{subsection.4.2}%
+\contentsline {section}{\numberline {5}Caso 1 --- Resumen del Sistema de un Solo Medio}{27}{section.5}%
+\contentsline {section}{\numberline {6}Caso 2: Tubo de Impedancia con Dos Medios Acoplados (Validación Aire-Agua)}{27}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Solución General por Tramos de la Ecuación de Helmholtz}{27}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Velocidad de Partícula a partir de la Ecuación de Euler Linealizada}{28}{subsection.6.2}%
+\contentsline {subsection}{\numberline {6.3}Condiciones de Contorno y de Acoplamiento en la Interfaz}{28}{subsection.6.3}%
+\contentsline {subsection}{\numberline {6.4}Condiciones en el Extremo Derecho ($x = L = \text {\qty {1,0}{\metre }}$)}{29}{subsection.6.4}%
+\contentsline {section}{\numberline {7}Caso 2 --- Formulación Matricial del Sistema Acoplado}{30}{section.7}%
+\contentsline {subsection}{\numberline {7.1}1. Sistema Matricial para Pared Rígida (Sin Condición de Sommerfeld)}{30}{subsection.7.1}%
+\contentsline {subsection}{\numberline {7.2}2. Sistema Matricial con Condición de Sommerfeld}{30}{subsection.7.2}%
+\contentsline {subsection}{\numberline {7.3}Resolución Analítica MX=b}{31}{subsection.7.3}%
+\contentsline {subsubsection}{\numberline {7.3.1}Caso B: Sistema con Condición de Sommerfeld}{31}{subsubsection.7.3.1}%
+\contentsline {subsubsection}{\numberline {7.3.2}Caso A: Sistema con Pared Rígida (Neumann)}{31}{subsubsection.7.3.2}%
+\contentsline {section}{\numberline {8}Caso 2 --- Formulación Débil por el Método de Elementos Finitos (FEM)}{32}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Deducción de la Forma Variacional General}{32}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Condiciones de Contorno y Continuidad en la Interfaz}{33}{subsection.8.2}%
+\contentsline {subsection}{\numberline {8.3}Forma Débil Final con Condición de Sommerfeld}{34}{subsection.8.3}%
+\contentsline {subsection}{\numberline {8.4}Forma Débil Final sin Condición de Sommerfeld (Pared Rígida)}{34}{subsection.8.4}%
+\contentsline {section}{\numberline {9}Coeficientes Matriz 4x4}{34}{section.9}%
+\contentsline {section}{\numberline {10}Referencias}{35}{section.10}%
